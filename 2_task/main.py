@@ -1,4 +1,5 @@
-"""
+"""Домашнее задание 2.
+
 Вы очень любите считать. Не важно что, где и когда, главное посчитать все, что можно.
 Вам на вход приходит текст. Ваша программа должна посчитать количество слов в этом тексте и вывести на печать 10
 самых частых слов. Если слова встречаются одинаковое количество раз, то они должны быть отсортированы по алфавиту.
@@ -17,6 +18,9 @@
 для тестирования запустить pytest 2_task/test.py
 """
 
+import re
+from collections import Counter
+
 
 def top_10_most_common_words(text: str) -> dict[str, int]:
     """Функция возвращает топ 10 слов, встречающихся в тексте.
@@ -27,5 +31,10 @@ def top_10_most_common_words(text: str) -> dict[str, int]:
     Returns:
         словарь типа {слово: количество вхождений}
     """
-    most_common = {}
-    return most_common
+    text = re.findall('[А-Яа-я]{3,50}', text)
+    text = [word.lower() for word in text]
+    counter = list(Counter(text).items())
+    counter.sort()
+    counter.sort(key=lambda word: -word[1])
+
+    return dict(counter[:10])
