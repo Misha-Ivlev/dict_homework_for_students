@@ -20,6 +20,7 @@
 
 import os
 from decimal import Decimal
+from types import MappingProxyType
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SPLIT_SYMBOL = '\n'
@@ -44,14 +45,14 @@ def get_parsed_employees_info() -> list[dict[str, int | str]]:
     parsed_employees_info = []
 
     # Ваш код ниже
-    dict_helper = {
+    dict_helper = MappingProxyType({
         'id': lambda entry_val: {'id': int(entry_val)},
         'age': lambda entry_val: {'age': int(entry_val)},
         'name': lambda entry_val: {'name': entry_val},
         'salary': lambda entry_val: {'salary': Decimal(entry_val)},
         'position': lambda entry_val: {'position': entry_val},
         'last_name': lambda entry_val: {'last_name': entry_val},
-    }
+    })
 
     keys = list(dict_helper.keys())
     for entry in employees_info:
