@@ -44,20 +44,23 @@ def get_parsed_employees_info() -> list[dict[str, int | str]]:
     parsed_employees_info = []
 
     # Ваш код ниже
+    dict_helper = {
+        'id': lambda entry_val: {'id': int(entry_val)},
+        'age': lambda entry_val: {'age': int(entry_val)},
+        'name': lambda entry_val: {'name': entry_val},
+        'salary': lambda entry_val: {'salary': Decimal(entry_val)},
+        'position': lambda entry_val: {'position': entry_val},
+        'last_name': lambda entry_val: {'last_name': entry_val},
+    }
+
+    keys = list(dict_helper.keys())
     for entry in employees_info:
         parsed_employees_info.append({})
         entry = entry.split()
+        entry = zip(entry[::2], entry[1::2])
 
-        for index in range(len(entry) // 2):
-            key = entry[2 * index]
-            entry_value = entry[2 * index + 1]
-
-            match key:
-                case 'id' | 'age':
-                    parsed_employees_info[-1].update({key: int(entry_value)})
-                case 'salary':
-                    parsed_employees_info[-1].update({key: Decimal(entry_value)})
-                case 'name' | 'last_name' | 'position':
-                    parsed_employees_info[-1].update({key: entry_value})
+        for key, entry_value in entry:
+            if key in keys:
+                parsed_employees_info[-1].update(dict_helper.get(key)(entry_value))
 
     return parsed_employees_info
