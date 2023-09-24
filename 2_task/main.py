@@ -32,8 +32,8 @@ def top_10_most_common_words(text: str) -> dict[str, int]:
         словарь типа {слово: количество вхождений}
     """
     text = text.lower()
-    text = re.findall(r'\b\w{3,}\b', text)
-    counter = list(Counter(text).items())
+    words = re.findall(r'\b\w{3,}\b', text)
+    counter = list(Counter(words).items())
     counter = sorted(counter, key=lambda word: (-word[1], word[0]))
 
     return dict(counter[:10])
