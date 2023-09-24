@@ -46,12 +46,12 @@ def get_parsed_employees_info() -> list[dict[str, int | str]]:
 
     # Ваш код ниже
     dict_helper = MappingProxyType({
-        'id': lambda entry_val: {'id': int(entry_val)},
-        'age': lambda entry_val: {'age': int(entry_val)},
-        'name': lambda entry_val: {'name': entry_val},
-        'salary': lambda entry_val: {'salary': Decimal(entry_val)},
-        'position': lambda entry_val: {'position': entry_val},
-        'last_name': lambda entry_val: {'last_name': entry_val},
+        'id': int,
+        'age': int,
+        'name': str,
+        'salary': Decimal,
+        'position': str,
+        'last_name': str,
     })
 
     keys = list(dict_helper.keys())
@@ -60,8 +60,8 @@ def get_parsed_employees_info() -> list[dict[str, int | str]]:
         entry = entry.split()
         entry = zip(entry[::2], entry[1::2])
 
-        for key, entry_value in entry:
+        for key, valu in entry:
             if key in keys:
-                parsed_employees_info[-1].update(dict_helper.get(key)(entry_value))
+                parsed_employees_info[-1].update({key: dict_helper.get(key)(valu)})
 
     return parsed_employees_info
